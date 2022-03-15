@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1>Darkflow Flask App</h1>
+            {% set keys=['computer','dog','eagle','giraffe','horses','office','person','scream'] %}
+            {% for key in keys %}
+            <li><a href="{{url_for('darkflow_predict',key=key)}}">{{key}}</a></li>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

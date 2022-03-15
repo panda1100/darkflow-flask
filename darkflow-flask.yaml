@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: darkflow-flask
+  labels:
+    app: darkflow-flask
+spec:
+  containers:
+    - name: darkflow-flask
+      image: darkflow-flask:latest
+      ports:
+      - containerPort: 5000
+        protocol: TCP
+        name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: darkflow-flask
+  labels:
+    app: darkflow-flask
+spec:
+  ports:
+  - port: 5000
+    name: http
+    targetPort: 5000
+  selector:
+    app: darkflow-flask
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: darkflow-flask
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: darkflow-flask
+            port:
+              number: 5000
