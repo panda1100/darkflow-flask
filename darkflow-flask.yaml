@@ -6,13 +6,24 @@ metadata:
   labels:
     app: darkflow-flask
 spec:
+  volumes:
+    - name: darkflow-flask-volume
+      persistentVolumeClaim:
+        claimName: darkflow-flask-pvc
   containers:
     - name: darkflow-flask
-      image: darkflow-flask:latest
+      image: ghcr.io/panda1100/darkflow-flask:latest
+      volumeMounts:
+        - mountPath: "/darkflow-flask"
+          name: darkflow-flask-volume
+      workingDir: /darkflow-flask
       ports:
       - containerPort: 5000
         protocol: TCP
         name: http
+      resources:
+        limits:
+          nvidia.com/gpu: 1
 ---
 apiVersion: v1
 kind: Service
